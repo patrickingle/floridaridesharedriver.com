@@ -14,9 +14,9 @@
 			</div>
 	        <h1 class="w3-center">Your Florida Rideshare Driver</h1>
 		    <a href="https://survivalrevealed.blog" target="_blank" class="w3-button w3-light-grey">Visit Lifestyle Survival Tips</a>&nbsp;
-		    <a href="#rideshare-news" class="w3-button w3-light-grey">Jump to Rideshare News</a>&nbsp;
-		    <a href="#uber-news" class="w3-button w3-light-grey">Jump to Uber in the News</a>&nbsp;
-		    <a href="#lyft-news" class="w3-button w3-light-grey">Jump to Lyft in the News</a>&nbsp;
+		    <a href="https://news.google.com/rss/search?q=rideshare" target="_blank" class="w3-button w3-light-grey">See Rideshare News</a>&nbsp;
+		    <a href="https://news.google.com/rss/search?q=https://www.uber.com/blog" target="_blank" class="w3-button w3-light-grey">See Uber in the News</a>&nbsp;
+		    <a href="https://news.google.com/rss/search?q=https://www.lyft.com/blog" target="_blank" class="w3-button w3-light-grey">See Lyft in the News</a>&nbsp;
 		    <fieldset  id="vital-statistics" class="w3-block">
 		        <legend>Vital Statistics</legend>
 		        <ul class="w3-ul">
@@ -37,20 +37,6 @@
 		    <br/>
 		    <button id="launch-trivia-app" class="w3-button w3-block w3-green" style="display:none;">Play Trivia and Get a Backseat Driver's License</button>
 		    <br/>
-		</div>
-		<div id="news" class="w3-container">
-			<fieldset>
-				<legend id="rideshare-news">Rideshare in the News</legend>
-				<span id="news-content-rideshare"></span>
-			</fieldset>
-			<fieldset id="uber-news">
-				<legend>Uber in the News</legend>
-				<span id="news-content-uber"></span>
-			</fieldset>
-			<fieldset id="lyft-news">
-				<legend>Lyft in the News</legend>
-				<span id="news-content-lyft"></span>
-			</fieldset>
 		</div>
 		<div class="footer w3-container">
 			<!-- Accessible footer -->
@@ -74,66 +60,7 @@
 	    <script type="text/javascript">
 	        document.getElementById("launch-trivia-app").addEventListener("click",async function(e){
 	            window.location.replace('market://details?id=work.pingleware.trivia');
-				await getFeed("https://news.google.com/rss/search?q=rideshare","news-content-rideshare");
-				await getFeed("https://news.google.com/rss/search?q=https://www.uber.com/blog","news-content-uber");
-				await getFeed("https://news.google.com/rss/search?q=https://www.lyft.com/blog","news-content-lyft");
 	        });
-			async function getFeed(feedUrl, elementId) {
-			    try {
-			        const response = await fetch(feedUrl);
-			
-			        if (!response.ok) {
-			            throw new Error(`HTTP Error: ${response.status}`);
-			        }
-			
-			        const xmlText = await response.text();
-			        const parser = new DOMParser();
-			        const xml = parser.parseFromString(xmlText, "text/xml");
-			
-			        const items = xml.querySelectorAll("channel > item");
-			
-			        let html = "<ul class='w3-ul w3-hoverable w3-striped'>";
-			
-			        items.forEach(item => {
-			            const title = item.querySelector("title")?.textContent || "";
-			            const link = item.querySelector("link")?.textContent || "#";
-			            const pubDate = item.querySelector("pubDate")?.textContent || "";
-			
-			            const formattedDate = pubDate
-			                ? new Date(pubDate).toLocaleString("en-US", {
-			                    weekday: "long",
-			                    year: "numeric",
-			                    month: "long",
-			                    day: "2-digit",
-			                    hour: "2-digit",
-			                    minute: "2-digit",
-			                    hour12: true
-			                })
-			                : "";
-			
-			            html += `
-			                <li class="w3-block">
-			                    <a href="${link}"
-			                       target="_blank"
-			                       style="text-decoration:none;"
-			                       title="${title}">
-			                        ${title}<br>
-			                        <small><i>${formattedDate}</i></small>
-			                    </a>
-			                </li>
-			            `;
-			        });
-			
-			        html += "</ul>";
-			
-			        document.getElementById(elementId).innerHTML = html;
-			
-			    } catch (error) {
-			        console.error("RSS Feed Error:", error);
-			        document.getElementById(elementId).innerHTML =
-			            `<div class="w3-panel w3-red">Failed to load feed.</div>`;
-			    }
-			}		
 	    </script>
     </body>
 </html>
